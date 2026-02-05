@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Games</title>
+    <style>
+        /* --- CẤU HÌNH CHUNG --- */
+        body { font-family: 'Segoe UI', sans-serif; background-color: #1b2838; color: #c5c3c0; margin: 0; display: flex; height: 100vh; overflow: hidden; }
+        
+        /* --- CỘT TRÁI (SIDEBAR GIỐNG STEAM) --- */
+        .sidebar { 
+            width: 240px; 
+            background-color: #171a21; 
+            display: flex; flex-direction: column; 
+            border-right: 1px solid #000;
+        }
+        
+        /* --- SỬA CSS SEARCH BOX TẠI ĐÂY --- */
+        .search-box { 
+            padding: 10px; 
+            background-color: #171a21; 
+            position: relative; /* Quan trọng: để căn nút X */
+        }
+        .search-box input { 
+            width: 100%; 
+            padding: 6px 30px 6px 10px; /* Padding phải 30px để chữ không đè lên nút X */
+            background: #2a475e; border: 1px solid #171a21; 
+            color: #c5c3c0; border-radius: 2px; box-sizing: border-box; 
+            font-size: 13px;
+        }
+        .search-box input:focus { outline: none; border: 1px solid #1976d2; }
+
+        /* Style cho nút X */
+        .clear-btn {
+            position: absolute;
+            right: 18px; /* Căn lề phải */
+            top: 50%;
+            transform: translateY(-50%); /* Căn giữa dọc */
+            color: #888;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            display: none; /* Mặc định ẩn */
+            line-height: 1;
+            z-index: 10;
+        }
+        .clear-btn:hover { color: #fff; }
+        /* ---------------------------------- */
+
+        .game-list { flex: 1; overflow-y: auto; padding-top: 5px; }
+        
+        /* Item trong danh sách */
+        .game-item { 
+            padding: 6px 12px; 
+            cursor: pointer; 
+            display: flex; align-items: center; 
+            font-size: 13px; 
+            color: #969696;
+            transition: 0.1s;
+        }
+        .game-item:hover { background-color: #2a3f5a; color: white; }
+        .game-item.active { background-color: #3d4450; color: white; }
+        
+        .game-icon-small { 
+            width: 16px; height: 16px; margin-right: 8px; 
+            object-fit: contain; border-radius: 2px;
+        }
+        .default-icon {
+            width: 16px; height: 16px; margin-right: 8px;
+            background: #444; border-radius: 2px; display: inline-block;
+        }
+
+        /* --- CỘT PHẢI (CHI TIẾT GAME) --- */
+        .main-content { 
+            flex: 1; padding: 0; 
+            background: radial-gradient(circle at top right, #2a475e 0%, #1b2838 60%);
+            display: flex; flex-direction: column; 
+            position: relative;
+        }
+
+        .game-header {
+            height: 300px; position: relative; overflow: hidden;
+            display: flex; align-items: flex-end; padding: 30px;
+            box-shadow: inset 0 -50px 50px #1b2838;
+        }
+        .bg-image {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover;  z-index: 0;
+        }
+        
+        .game-info-container { z-index: 1; position: relative; width: 100%; }
+        
+        h1 { font-size: 2.5em; margin: 0 0 10px 0; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        
+        .meta-info { display: flex; gap: 20px; font-size: 14px; margin-bottom: 20px; }
+        .tag { background: rgba(0,0,0,0.4); padding: 5px 10px; border-radius: 4px; border: 1px solid #555; }
+        
+        .btn-download { 
+            background: linear-gradient(90deg, #06BFFF 0%, #2D73FF 100%); 
+            color: #fff; border: none; padding: 12px 30px; 
+            font-size: 16px; border-radius: 4px; cursor: pointer; 
+            font-weight: bold; text-transform: uppercase; letter-spacing: 1px;
+            transition: 0.2s; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            display: inline-flex; align-items: center;
+        }
+        .btn-download:hover { filter: brightness(1.2); transform: translateY(-2px); }
+
+        .description-box { padding: 30px; line-height: 1.6; max-width: 800px; color: #acb2b8; }
+
+        .hidden { display: none !important; }
+        .welcome { display: flex; height: 100%; justify-content: center; align-items: center; color: #555; font-size: 1.5em; }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #171a21; }
+        ::-webkit-scrollbar-thumb { background: #3d4450; border-radius: 3px; }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Lọc game..." onkeyup="filterGames()">
+            <span id="clearSearchBtn" class="clear-btn" onclick="clearSearch()">&times;</span>
+        </div>
+        <div class="game-list" id="gameListContainer">
+            </div>
+    </div>
+
+    <div class="main-content">
+        <div id="welcomeMessage" class="welcome">
+            <p>Chọn game để xem chi tiết</p>
+        </div>
+
+        <div id="gameDetail" class="hidden" style="width: 100%; height: 100%; overflow-y: auto;">
+            
+            <div class="game-header">
+                <img id="detailBg" class="bg-image" src="">
+                
+                <div class="game-info-container">
+                    <h1 id="detailName">Tên Game</h1>
+                    
+                    <div class="meta-info">
+                        <div class="tag">💾 Dung lượng: <b id="detailSize" style="color: #4db8ff">Unknown</b></div>
+                        <div class="tag">🔗 Số part: <b id="linkCount">0</b></div>
+                    </div>
+
+                    <button class="btn-download" onclick="downloadCurrentGame()">
+                        ▶ TẢI XUỐNG
+                    </button>
+                </div>
+            </div>
+
+            <div class="description-box">
+                <h3>THÔNG TIN</h3>
+                <p id="detailDesc">Mô tả game...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script>
+        let selectedGameIndex = -1;
+
+        window.onload = function() {
+            if (typeof KHO_GAME === 'undefined') {
+                alert("Lỗi: Không tìm thấy file data.js!"); return;
+            }
+            KHO_GAME.sort(function(a, b) {
+            return a.ten.localeCompare(b.ten);
+            });
+            renderGameList(KHO_GAME);
+        };
+
+        function renderGameList(data) {
+            const container = document.getElementById('gameListContainer');
+            container.innerHTML = ""; 
+
+            data.forEach((game, index) => {
+                const div = document.createElement('div');
+                div.className = 'game-item';
+                
+                let iconHtml = '<span class="default-icon"></span>';
+                if (game.icon && game.icon.trim() !== "") {
+                    iconHtml = `<img src="${game.icon}" class="game-icon-small">`;
+                } else if (game.anh_bia && game.anh_bia.trim() !== "") {
+                    iconHtml = `<img src="${game.anh_bia}" class="game-icon-small">`;
+                }
+
+                div.innerHTML = `${iconHtml} ${game.ten}`;
+                div.onclick = () => selectGame(index, div);
+                div.dataset.index = index; 
+                container.appendChild(div);
+            });
+        }
+
+        function selectGame(index, element) {
+            document.querySelectorAll('.game-item').forEach(i => i.classList.remove('active'));
+            element.classList.add('active');
+
+            document.getElementById('welcomeMessage').classList.add('hidden');
+            document.getElementById('gameDetail').classList.remove('hidden');
+
+            const game = KHO_GAME[index];
+            selectedGameIndex = index;
+
+            document.getElementById('detailName').innerText = game.ten;
+            const descBox = document.getElementById('detailDesc');
+    
+            if (Array.isArray(game.mota)) {
+                descBox.style.textAlign = "left"; 
+                descBox.innerHTML = game.mota.map(line => `• ${line}`).join('<br>');
+            } else {
+                descBox.style.textAlign = "center"; 
+                descBox.innerText = game.mota;
+            }
+            document.getElementById('linkCount').innerText = game.links.length;
+            document.getElementById('detailSize').innerText = game.dung_luong || "Không rõ";
+
+            if (game.anh_bia) {
+                document.getElementById('detailBg').src = game.anh_bia;
+                document.getElementById('detailBg').style.display = 'block';
+            } else {
+                document.getElementById('detailBg').style.display = 'none';
+            }
+        }
+
+        function downloadCurrentGame() {
+            if (selectedGameIndex === -1) return;
+            const links = KHO_GAME[selectedGameIndex].links;
+            if (links.length === 0) { alert("Game này chưa có link!"); return; }
+
+            links.forEach((link, i) => {
+                setTimeout(() => window.open(link, '_blank'), i * 300);
+            });
+        }
+
+        // --- HÀM TÌM KIẾM ĐÃ SỬA ---
+        function filterGames() {
+            const input = document.getElementById('searchInput'); // Lấy element input
+            const filter = input.value.toLowerCase(); // Lấy giá trị chữ
+            const clearBtn = document.getElementById('clearSearchBtn'); // Lấy nút X
+            const items = document.querySelectorAll('.game-item');
+
+            // Logic Ẩn/Hiện nút X
+            if (filter.length > 0) {
+                clearBtn.style.display = 'block';
+            } else {
+                clearBtn.style.display = 'none';
+            }
+
+            // Logic lọc game
+            items.forEach(item => {
+                const text = item.innerText.toLowerCase();
+                item.style.display = text.includes(filter) ? "flex" : "none";
+            });
+        }
+
+        // --- HÀM XÓA TÌM KIẾM MỚI ---
+        function clearSearch() {
+            const input = document.getElementById('searchInput');
+            input.value = ''; // Xóa chữ trong ô
+            filterGames(); // Gọi lại hàm lọc để hiện lại list game
+            input.focus(); // Đặt trỏ chuột lại vào ô input
+        }
+    </script>
+</body>
+</html>
