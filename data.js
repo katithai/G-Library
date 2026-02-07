@@ -68,7 +68,22 @@ const KHO_GAME = [
         "links": [
             "https://drive.usercontent.google.com/download?id=1ziVO3WjyU9Il4JqRUOZG3F_eQN-YbRw9&export=download&authuser=0"
         ]
+    },
+    {
+        "id": "stardewvalley",
+        "ten": "Stardew Valley",
+        "dung_luong": "490 MB",
+        "anh_bia": "https://cdn2.steamgriddb.com/hero_thumb/d44c78dcad9de0aed2f37902ea02cef2.png",
+        "icon": "https://cdn2.steamgriddb.com/icon/b2c450336c4222e3cea68d37aafa75fd/32/256x256.png", 
+        "mota": [
+            
+        ],
+        "links": [
+            "https://drive.usercontent.google.com/download?id=1it9tG7WtclTI8NxjSQoPKfJBap7yVjzo&authuser=0",
+            "https://linkneverdie.com/f/471bddae-df55-4933-997a-2e265818c467"
+        ]
     }
+
 
 
 ];
