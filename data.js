@@ -82,6 +82,21 @@ const KHO_GAME = [
             "https://drive.usercontent.google.com/download?id=1it9tG7WtclTI8NxjSQoPKfJBap7yVjzo&authuser=0",
             "https://linkneverdie.com/f/471bddae-df55-4933-997a-2e265818c467"
         ]
+    },
+    {
+        "id": "pes2017",
+        "ten": "PES 2017",
+        "dung_luong": "10.7 GB",
+        "anh_bia": "https://cdn2.steamgriddb.com/hero_thumb/1db926067f947af701d45036dd9e9f66.jpg",
+        "icon": "https://cdn2.steamgriddb.com/icon/190040d96ceb6c621d7fc6c0b7ca3f4a/32/256x256.png", 
+        "mota": [
+            
+        ],
+        "links": [
+            "https://drive.usercontent.google.com/download?id=10gCyUcy-7BKN-GIwpPVzvWaj_j4G1dh6&authuser=0",
+            "https://linkneverdie.com/f/c226426b-b620-43de-b9ec-609696ac75b6"
+            "https://drive.usercontent.google.com/download?id=10jUJ58hmZSRgJOv4oFEoaOZXNKJAIiV_&authuser=0"
+        ]
     }
 
 
