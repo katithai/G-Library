@@ -80,7 +80,7 @@ const KHO_GAME = [
         ],
         "links": [
             "https://drive.usercontent.google.com/download?id=1it9tG7WtclTI8NxjSQoPKfJBap7yVjzo&authuser=0",
-            "https://linkneverdie.com/f/471bddae-df55-4933-997a-2e265818c467"
+            "https://linkneverdie.com/f/471bddae-df55-4933-997a-2e265818c467",
         ]
     },
     {
@@ -94,8 +94,8 @@ const KHO_GAME = [
         ],
         "links": [
             "https://drive.usercontent.google.com/download?id=10gCyUcy-7BKN-GIwpPVzvWaj_j4G1dh6&authuser=0",
-            "https://linkneverdie.com/f/c226426b-b620-43de-b9ec-609696ac75b6"
-            "https://drive.usercontent.google.com/download?id=10jUJ58hmZSRgJOv4oFEoaOZXNKJAIiV_&authuser=0"
+            "https://linkneverdie.com/f/c226426b-b620-43de-b9ec-609696ac75b6",
+            "https://drive.usercontent.google.com/download?id=10jUJ58hmZSRgJOv4oFEoaOZXNKJAIiV_&authuser=0",
         ]
     }
 
